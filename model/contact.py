@@ -1,12 +1,7 @@
 from random import randint, getrandbits, choice
-import string
 import model.utils as utils
 import datetime
-from data.Phone import CITY_PHONE_TEMPLATES, MOBILE_PHONE_TEMPLATES
-
-
-alphabet = string.ascii_letters
-numbers = string.digits
+import data.constants as c
 
 
 class Contact:
@@ -76,48 +71,48 @@ class Contact:
         # with 50% probability generate random word on alphabet with random length
         # and with probability 50% returns EMPTY_STRING
         if bool(getrandbits(1)):
-            self.lastname = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet, randint(3, 10))
+            self.lastname = '' if bool(getrandbits(1)) else utils.get_random_word(c.ALPHABET, randint(3, 10))
         if bool(getrandbits(1)):
-            self.firstname = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet, randint(3, 10))
+            self.firstname = '' if bool(getrandbits(1)) else utils.get_random_word(c.ALPHABET, randint(3, 10))
         if bool(getrandbits(1)):
-            self.middlename = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet, randint(3, 10))
+            self.middlename = '' if bool(getrandbits(1)) else utils.get_random_word(c.ALPHABET, randint(3, 10))
         if bool(getrandbits(1)):
-            self.nickname = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet, randint(3, 10))
+            self.nickname = '' if bool(getrandbits(1)) else utils.get_random_word(c.ALPHABET, randint(3, 10))
 
         # getrandbits(1) returns 0 or 1 with 50% probability
         # with 50% probability generate random word on alphabet with random length
         # and with probability 50% returns EMPTY_STRING
         if bool(getrandbits(1)):
-            self.title = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet, randint(3, 10))
+            self.title = '' if bool(getrandbits(1)) else utils.get_random_word(c.ALPHABET, randint(3, 10))
         if bool(getrandbits(1)):
-            self.company = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet, randint(3, 10))
+            self.company = '' if bool(getrandbits(1)) else utils.get_random_word(c.ALPHABET, randint(3, 10))
         if bool(getrandbits(1)):
-            self.address = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet + ' ', randint(10, 20))
+            self.address = '' if bool(getrandbits(1)) else utils.get_random_word(c.ALPHABET + ' ', randint(10, 20))
 
         # 30% probability to be empty value
         if bool(getrandbits(1)):
-            self.phone_home = '' if randint(0, 2) < 1 else choice(CITY_PHONE_TEMPLATES).get_value()
+            self.phone_home = '' if randint(0, 2) < 1 else choice(c.CITY_PHONE_TEMPLATES).get_value()
         # 10% probability to be empty value
         if bool(getrandbits(1)):
-            self.mobile = '' if randint(0, 9) < 1 else choice(MOBILE_PHONE_TEMPLATES).get_value()
+            self.mobile = '' if randint(0, 9) < 1 else choice(c.MOBILE_PHONE_TEMPLATES).get_value()
         # 50% probability to be empty value
         if bool(getrandbits(1)):
-            self.phone_work = '' if bool(getrandbits(1)) else choice(CITY_PHONE_TEMPLATES).get_value()
+            self.phone_work = '' if bool(getrandbits(1)) else choice(c.CITY_PHONE_TEMPLATES).get_value()
         # 10% probability to be empty value
         if bool(getrandbits(1)):
-            self.fax = '' if randint(0, 9) < 1 else choice(CITY_PHONE_TEMPLATES).get_value()
+            self.fax = '' if randint(0, 9) < 1 else choice(c.CITY_PHONE_TEMPLATES).get_value()
 
         # randint(0, 4) < 1 = 20%; randint(0, 4) < 4 = 80%
         # with some probability generate random word on alphabet with random length
         if bool(getrandbits(1)):
-            self.email_main = '' if randint(0, 4) < 1 else utils.get_random_email(alphabet)
+            self.email_main = '' if randint(0, 4) < 1 else utils.get_random_email(c.ALPHABET)
         if bool(getrandbits(1)):
-            self.email_secondary = '' if randint(0, 4) < 4 else utils.get_random_email(alphabet)
+            self.email_secondary = '' if randint(0, 4) < 4 else utils.get_random_email(c.ALPHABET)
         if bool(getrandbits(1)):
-            self.email_other = '' if randint(0, 4) < 4 else utils.get_random_email(alphabet)
+            self.email_other = '' if randint(0, 4) < 4 else utils.get_random_email(c.ALPHABET)
         if bool(getrandbits(1)):
             self.homepage = '' if bool(getrandbits(1)) \
-                else 'http://' + utils.get_random_word(alphabet, randint(3, 10)) + '.com'
+                else 'http://' + utils.get_random_word(c.ALPHABET, randint(3, 10)) + '.com'
 
         start = datetime.date(1980, 1, 1)
         end = datetime.date(2000, 12, 31)
@@ -136,35 +131,36 @@ class Contact:
         # randint(0, 2) < 2 = 66%; getrandbits(1) returns 0 or 1 with 50% probability
         # with some probability generate random word on alphabet with random length
         if bool(getrandbits(1)):
-            self.address_secondary = '' if randint(0, 2) < 2 else utils.get_random_word(alphabet + ' ', randint(10, 20))
+            self.address_secondary = '' if randint(0, 2) < 2 else utils.get_random_word(c.ALPHABET + ' ',
+                                                                                        randint(10, 20))
         if bool(getrandbits(1)):
-            self.phone_secondary = '' if randint(0, 2) < 2 else choice(CITY_PHONE_TEMPLATES).get_value()
+            self.phone_secondary = '' if randint(0, 2) < 2 else choice(c.CITY_PHONE_TEMPLATES).get_value()
         if bool(getrandbits(1)):
-            self.notes = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet + ' ', randint(10, 20))
+            self.notes = '' if bool(getrandbits(1)) else utils.get_random_word(c.ALPHABET + ' ', randint(10, 20))
         self.emails = self.calculate_emails()
         self.phones = self.calculate_phones()
 
         return self
 
     def set_all_parameters_to_random_value(self):
-        self.lastname = utils.get_random_word(alphabet, randint(3, 10))
-        self.firstname = utils.get_random_word(alphabet, randint(3, 10))
-        self.middlename = utils.get_random_word(alphabet, randint(3, 10))
-        self.nickname = utils.get_random_word(alphabet, randint(3, 10))
+        self.lastname = utils.get_random_word(c.ALPHABET, randint(3, 10))
+        self.firstname = utils.get_random_word(c.ALPHABET, randint(3, 10))
+        self.middlename = utils.get_random_word(c.ALPHABET, randint(3, 10))
+        self.nickname = utils.get_random_word(c.ALPHABET, randint(3, 10))
 
-        self.title = utils.get_random_word(alphabet, randint(3, 10))
-        self.company = utils.get_random_word(alphabet, randint(3, 10))
-        self.address = utils.get_random_word(alphabet + ' ', randint(10, 20))
+        self.title = utils.get_random_word(c.ALPHABET, randint(3, 10))
+        self.company = utils.get_random_word(c.ALPHABET, randint(3, 10))
+        self.address = utils.get_random_word(c.ALPHABET + ' ', randint(10, 20))
 
-        self.phone_home = choice(CITY_PHONE_TEMPLATES).get_value()
-        self.mobile = choice(MOBILE_PHONE_TEMPLATES).get_value()
-        self.phone_work = choice(CITY_PHONE_TEMPLATES).get_value()
-        self.fax = choice(CITY_PHONE_TEMPLATES).get_value()
+        self.phone_home = choice(c.CITY_PHONE_TEMPLATES).get_value()
+        self.mobile = choice(c.MOBILE_PHONE_TEMPLATES).get_value()
+        self.phone_work = choice(c.CITY_PHONE_TEMPLATES).get_value()
+        self.fax = choice(c.CITY_PHONE_TEMPLATES).get_value()
 
-        self.email_main = utils.get_random_email(alphabet)
-        self.email_secondary = utils.get_random_email(alphabet)
-        self.email_other = utils.get_random_email(alphabet)
-        self.homepage = 'http://' + utils.get_random_word(alphabet, randint(3, 10)) + '.com'
+        self.email_main = utils.get_random_email(c.ALPHABET)
+        self.email_secondary = utils.get_random_email(c.ALPHABET)
+        self.email_other = utils.get_random_email(c.ALPHABET)
+        self.homepage = 'http://' + utils.get_random_word(c.ALPHABET, randint(3, 10)) + '.com'
 
         start = datetime.date(1980, 1, 1)
         end = datetime.date(2000, 12, 31)
@@ -178,10 +174,10 @@ class Contact:
         self.amonth = anniversary.strftime('%B')
         self.aday = str(int(anniversary.strftime('%d')))
 
-        self.address_secondary = '' if randint(0, 2) < 2 else utils.get_random_word(alphabet + ' ', randint(10, 20))
+        self.address_secondary = '' if randint(0, 2) < 2 else utils.get_random_word(c.ALPHABET + ' ', randint(10, 20))
         self.phone_secondary = '' if randint(0, 2) < 2 \
-            else choice(MOBILE_PHONE_TEMPLATES + CITY_PHONE_TEMPLATES).get_value()
-        self.notes = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet + ' ', randint(10, 20))
+            else choice(c.MOBILE_PHONE_TEMPLATES + c.CITY_PHONE_TEMPLATES).get_value()
+        self.notes = '' if bool(getrandbits(1)) else utils.get_random_word(c.ALPHABET + ' ', randint(10, 20))
 
         self.emails = self.calculate_emails()
         self.phones = self.calculate_phones()
@@ -252,8 +248,9 @@ class Contact:
 
     def __repr__(self):
         fio = [self.lastname, self.firstname]
-        return f'Contact({self.id}, FIO=\"{" ".join(filter(lambda x: x is not None and x != "", fio))}\", ' \
-               f'ADDRESS=\"{self.address}\", EMAILS=\"{self.emails}\", PHONES=\"{self.phones}\")'
+        return f'Contact({"id="+self.id+", " if self.id is not None else ""}' \
+               f'FIO="{" ".join(filter(lambda x: x is not None and x != "", fio))}", ' \
+               f'ADDRESS="{self.address}"'
 
     def __lt__(self, other):
         # None >> any integer

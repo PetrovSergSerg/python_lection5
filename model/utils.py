@@ -1,7 +1,7 @@
 import datetime
 from random import randint, choice, randrange
 import re
-import string
+import data.constants as c
 
 
 def get_random_date(start, end):
@@ -23,8 +23,7 @@ def get_random_email(alphabet: str):
 
 
 def random_string(prefix: str, max_length: int):
-    symbols = string.ascii_letters + string.digits + string.punctuation + " "*15
-    return prefix+"".join([choice(symbols) for x in range(randrange(max_length))])
+    return prefix+"".join([choice(c.SYMBOLS) for x in range(randrange(max_length))])
 
 
 def clear(string):

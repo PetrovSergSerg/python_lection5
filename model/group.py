@@ -1,8 +1,6 @@
 import model.utils as utils
 from random import randint, getrandbits
-import string
-
-alphabet = string.ascii_letters
+import data.constants as c
 
 
 class Group:
@@ -20,17 +18,17 @@ class Group:
 
     def set_random_parameters_to_random_value(self):
         if bool(getrandbits(1)):
-            self.name = '' if randint(0, 4) < 1 else utils.get_random_word(alphabet, randint(3, 10))
+            self.name = '' if randint(0, 4) < 1 else utils.get_random_word(c.ALPHABET, randint(3, 10))
         if bool(getrandbits(1)):
-            self.header = '' if randint(0, 4) < 1 else utils.get_random_word(alphabet + ' ', randint(10, 20))
+            self.header = '' if randint(0, 4) < 1 else utils.get_random_word(c.ALPHABET + ' '*5, randint(10, 20))
         if bool(getrandbits(1)):
-            self.footer = '' if randint(0, 4) < 1 else utils.get_random_word(alphabet + ' ', randint(10, 20))
+            self.footer = '' if randint(0, 4) < 1 else utils.get_random_word(c.ALPHABET + ' '*5, randint(10, 20))
         return self
 
     def set_all_parameters_to_random_value(self):
-        self.name = utils.get_random_word(alphabet, randint(3, 10))
-        self.header = utils.get_random_word(alphabet + ' ', randint(10, 20))
-        self.footer = utils.get_random_word(alphabet + ' ', randint(10, 20))
+        self.name = utils.get_random_word(c.ALPHABET, randint(3, 10))
+        self.header = utils.get_random_word(c.ALPHABET + ' '*5, randint(10, 20))
+        self.footer = utils.get_random_word(c.ALPHABET + ' '*5, randint(10, 20))
         return self
 
     def __eq__(self, other):
@@ -40,7 +38,8 @@ class Group:
                and self.name == other.name
 
     def __repr__(self):
-        return f'Group(id={self.id}, name="{self.name}", header="{self.header}", footer="{self.footer}")'
+        return f'Group({"id="+self.id+", " if self.id is not None else ""}' \
+               f'name="{self.name}", header="{self.header}", footer="{self.footer}")'
 
     def __lt__(self, other):
         # None >> any integer
