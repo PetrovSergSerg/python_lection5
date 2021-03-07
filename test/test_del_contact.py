@@ -22,8 +22,7 @@ def test_delete_any_contact_from_list(app):
 
     # we removed random element, so knowledge the id of deleted group is the additional complexity
     # so it will be enough to make sure that all elements of NEW list are in OLD list
-    assert expected_group_list.sort() == new_contacts.sort()
-
+    assert sorted(expected_group_list) == sorted(new_contacts)
 
 
 def test_delete_any_contact_from_itself(app):
@@ -47,7 +46,7 @@ def test_delete_any_contact_from_itself(app):
 
     # we removed random element, so knowledge the id of deleted group is the additional complexity
     # so it will be enough to make sure that all elements of NEW list are in OLD list
-    assert expected_group_list.sort() == new_contacts.sort()
+    assert sorted(expected_group_list) == sorted(new_contacts)
 
 
 

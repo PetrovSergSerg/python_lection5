@@ -1,7 +1,9 @@
-from random import randint, getrandbits
+from random import randint, getrandbits, choice
 import string
 import model.utils as utils
 import datetime
+from data.Phone import CITY_PHONE_TEMPLATES, MOBILE_PHONE_TEMPLATES
+
 
 alphabet = string.ascii_letters
 numbers = string.digits
@@ -52,10 +54,12 @@ class Contact:
     def calculate_phones(self):
         # get list of phones for field in contact_list
         phones = [self.phone_home, self.mobile, self.phone_work, self.phone_secondary]
+
         # filter this list by extracting all not-None elements
-        phones = list(filter(lambda x: x is not None and x != "", phones))
+        phones = list(map(lambda x: utils.clear(x), (filter(lambda x: x is not None and x != "", phones))))
+
         # and get string of list splitting all elements by "\n"
-        return "" if len(phones) == 0 else "\n".join(phones)
+        return utils.clear("" if len(phones) == 0 else "\n".join(phones))
 
     def set_empty_parameters(self):
         for name, value in self.__dict__.items():
@@ -92,16 +96,16 @@ class Contact:
 
         # 30% probability to be empty value
         if bool(getrandbits(1)):
-            self.phone_home = '' if randint(0, 2) < 1 else '+7495' + utils.get_random_word(numbers, 7)
+            self.phone_home = '' if randint(0, 2) < 1 else choice(CITY_PHONE_TEMPLATES).get_value()
         # 10% probability to be empty value
         if bool(getrandbits(1)):
-            self.mobile = '' if randint(0, 9) < 1 else '+79' + utils.get_random_word(numbers, 9)
+            self.mobile = '' if randint(0, 9) < 1 else choice(MOBILE_PHONE_TEMPLATES).get_value()
         # 50% probability to be empty value
         if bool(getrandbits(1)):
-            self.phone_work = '' if bool(getrandbits(1)) else '+79' + utils.get_random_word(numbers, 9)
+            self.phone_work = '' if bool(getrandbits(1)) else choice(CITY_PHONE_TEMPLATES).get_value()
         # 10% probability to be empty value
         if bool(getrandbits(1)):
-            self.fax = '' if randint(0, 9) < 1 else '+7495' + utils.get_random_word(numbers, 7)
+            self.fax = '' if randint(0, 9) < 1 else choice(CITY_PHONE_TEMPLATES).get_value()
 
         # randint(0, 4) < 1 = 20%; randint(0, 4) < 4 = 80%
         # with some probability generate random word on alphabet with random length
@@ -134,7 +138,7 @@ class Contact:
         if bool(getrandbits(1)):
             self.address_secondary = '' if randint(0, 2) < 2 else utils.get_random_word(alphabet + ' ', randint(10, 20))
         if bool(getrandbits(1)):
-            self.phone_secondary = '' if randint(0, 2) < 2 else '+7495' + utils.get_random_word(numbers, 7)
+            self.phone_secondary = '' if randint(0, 2) < 2 else choice(CITY_PHONE_TEMPLATES).get_value()
         if bool(getrandbits(1)):
             self.notes = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet + ' ', randint(10, 20))
         self.emails = self.calculate_emails()
@@ -152,10 +156,10 @@ class Contact:
         self.company = utils.get_random_word(alphabet, randint(3, 10))
         self.address = utils.get_random_word(alphabet + ' ', randint(10, 20))
 
-        self.phone_home = '+7495' + utils.get_random_word(numbers, 7)
-        self.mobile = '+79' + utils.get_random_word(numbers, 9)
-        self.phone_work = '+79' + utils.get_random_word(numbers, 9)
-        self.fax = '+7495' + utils.get_random_word(numbers, 7)
+        self.phone_home = choice(CITY_PHONE_TEMPLATES).get_value()
+        self.mobile = choice(MOBILE_PHONE_TEMPLATES).get_value()
+        self.phone_work = choice(CITY_PHONE_TEMPLATES).get_value()
+        self.fax = choice(CITY_PHONE_TEMPLATES).get_value()
 
         self.email_main = utils.get_random_email(alphabet)
         self.email_secondary = utils.get_random_email(alphabet)
@@ -175,7 +179,8 @@ class Contact:
         self.aday = str(int(anniversary.strftime('%d')))
 
         self.address_secondary = '' if randint(0, 2) < 2 else utils.get_random_word(alphabet + ' ', randint(10, 20))
-        self.phone_secondary = '' if randint(0, 2) < 2 else '+7495' + utils.get_random_word(numbers, 7)
+        self.phone_secondary = '' if randint(0, 2) < 2 \
+            else choice(MOBILE_PHONE_TEMPLATES + CITY_PHONE_TEMPLATES).get_value()
         self.notes = '' if bool(getrandbits(1)) else utils.get_random_word(alphabet + ' ', randint(10, 20))
 
         self.emails = self.calculate_emails()
@@ -183,19 +188,76 @@ class Contact:
 
         return self
 
+    def update(self, to):
+        if to.lastname is not None:
+            self.lastname = to.lastname
+        if to.firstname is not None:
+            self.firstname = to.firstname
+        if to.middlename is not None:
+            self.middlename = to.middlename
+        if to.nickname is not None:
+            self.nickname = to.nickname
+        if to.title is not None:
+            self.title = to.title
+        if to.company is not None:
+            self.company = to.company
+        if to.address is not None:
+            self.address = to.address
+        if to.phone_home is not None:
+            self.phone_home = to.phone_home
+        if to.mobile is not None:
+            self.mobile = to.mobile
+        if to.phone_work is not None:
+            self.phone_work = to.phone_work
+        if to.fax is not None:
+            self.fax = to.fax
+        if to.email_main is not None:
+            self.email_main = to.email_main
+        if to.email_secondary is not None:
+            self.email_secondary = to.email_secondary
+        if to.email_other is not None:
+            self.email_other = to.email_other
+        if to.homepage is not None:
+            self.homepage = to.homepage
+        if to.byear is not None:
+            self.byear = to.byear
+        if to.bmonth is not None:
+            self.bmonth = to.bmonth
+        if to.bday is not None:
+            self.bday = to.bday
+        if to.ayear is not None:
+            self.ayear = to.ayear
+        if to.amonth is not None:
+            self.amonth = to.amonth
+        if to.aday is not None:
+            self.aday = to.aday
+        if to.address_secondary is not None:
+            self.address_secondary = to.address_secondary
+        if to.phone_secondary is not None:
+            self.phone_secondary = to.phone_secondary
+        if to.notes is not None:
+            self.notes = to.notes
+        e = self.calculate_emails()
+        self.emails = e
+        p = self.calculate_phones()
+        self.phones = p
+
+        print(self)
+        print(to)
+
     def __eq__(self, other):
         return (self.id is None
                 or other.id is None
                 or self.id == other.id) \
-               and self.lastname == other.lastname \
-               and self.firstname == other.firstname \
-               and self.address == other.address \
+               and utils.xstr(self.lastname) == utils.xstr(other.lastname) \
+               and utils.xstr(self.firstname) == utils.xstr(other.firstname) \
+               and utils.xstr(self.address).strip() == utils.xstr(other.address).strip() \
                and self.emails == other.emails \
                and self.phones == other.phones
 
     def __repr__(self):
         fio = [self.lastname, self.firstname]
-        return f'Contact({self.id}, FIO=\"{" ".join(filter(lambda x: x != "", fio))}\", ' \
+        return f'Contact({self.id}, FIO=\"{" ".join(filter(lambda x: x is not None and x != "", fio))}\", ' \
                f'ADDRESS=\"{self.address}\", EMAILS=\"{self.emails}\", PHONES=\"{self.phones}\")'
 
     def __lt__(self, other):

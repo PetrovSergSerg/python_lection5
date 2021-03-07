@@ -23,19 +23,20 @@ class ContactHelper:
 
         self.contact_cache = None
 
-    def edit_any_contact(self, contact: Contact):
+    def edit_any_contact(self, contact: Contact) -> (int, Contact):
         wd = self.app.wd
         self.menu.home()
 
         entry_list = wd.find_elements_by_xpath("//tr[@name='entry']")
         assert len(entry_list) > 0
 
-        entry = entry_list[randint(0, len(entry_list) - 1)]
+        index = randint(0, len(entry_list) - 1)
+        entry = entry_list[index]
 
-        contact_id = entry.find_element_by_name("selected[]").get_attribute("value")
         edit = entry.find_element_by_xpath(".//img[@title='Edit']")
         edit.click()
 
+        contact_old_state = self.grab_data()
         self.fill_contact(contact)
 
         update = wd.find_element_by_xpath("//input[@type='submit'][@value='Update']")
@@ -45,7 +46,7 @@ class ContactHelper:
 
         self.contact_cache = None
 
-        return contact_id
+        return index, contact_old_state
 
     contact_cache = None
 
@@ -70,6 +71,38 @@ class ContactHelper:
                                                   phones=phones))
 
         return self.contact_cache
+
+    def get_contact_from_edit_page(self, index: int):
+        wd = self.app.wd
+        self.menu.home()
+        entry_list = wd.find_elements_by_xpath("//tr[@name='entry']")
+        assert len(entry_list) > 0
+
+        entry = entry_list[index]
+
+        edit = entry.find_element_by_xpath(".//img[@title='Edit']")
+        edit.click()
+
+        return self.grab_data()
+
+    def grab_data(self) -> Contact:
+        wd = self.app.wd
+
+        id = wd.find_element_by_name("id").get_attribute("value")
+        lastname = wd.find_element_by_name("lastname").get_attribute("value")
+        firstname = wd.find_element_by_name("firstname").get_attribute("value")
+        address = wd.find_element_by_name("address").get_attribute("value")
+        phone_home = wd.find_element_by_name("home").get_attribute("value")
+        phone_work = wd.find_element_by_name("work").get_attribute("value")
+        mobile = wd.find_element_by_name("mobile").get_attribute("value")
+        phone_secondary = wd.find_element_by_name("phone2").get_attribute("value")
+        email = wd.find_element_by_name("email").get_attribute("value")
+        email_secondary = wd.find_element_by_name("email2").get_attribute("value")
+        email_other = wd.find_element_by_name("email3").get_attribute("value")
+
+        return Contact(id=id, lastname=lastname, firstname=firstname, address=address,
+                       phone_home=phone_home, phone_work=phone_work, mobile=mobile, phone_secondary=phone_secondary,
+                       email_main=email, email_secondary=email_secondary, email_other=email_other)
 
     def fill_contact(self, contact):
         self.type_in_field("firstname", contact.firstname)
