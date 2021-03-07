@@ -237,13 +237,8 @@ class Contact:
             self.phone_secondary = to.phone_secondary
         if to.notes is not None:
             self.notes = to.notes
-        e = self.calculate_emails()
-        self.emails = e
-        p = self.calculate_phones()
-        self.phones = p
-
-        print(self)
-        print(to)
+        self.emails = self.calculate_emails()
+        self.phones = self.calculate_phones()
 
     def __eq__(self, other):
         return (self.id is None
