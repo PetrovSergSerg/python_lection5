@@ -40,7 +40,7 @@ class Group:
                and self.name == other.name
 
     def __repr__(self):
-        return f'Group({self.id}, name=\"{self.name}\")'
+        return f'Group(id={self.id}, name="{self.name}", header="{self.header}", footer="{self.footer}")'
 
     def __lt__(self, other):
         # None >> any integer

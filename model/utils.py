@@ -1,6 +1,7 @@
 import datetime
-from random import randint, choice
+from random import randint, choice, randrange
 import re
+import string
 
 
 def get_random_date(start, end):
@@ -19,6 +20,11 @@ def get_random_word(alphabet: str, length: int):
 def get_random_email(alphabet: str):
     """Generate random email using function get_random_word(alphabet, length)"""
     return get_random_word(alphabet, randint(3, 10)) + '@' + get_random_word(alphabet, randint(2, 10)) + '.ru'
+
+
+def random_string(prefix: str, max_length: int):
+    symbols = string.ascii_letters + string.digits + string.punctuation + " "*15
+    return prefix+"".join([choice(symbols) for x in range(randrange(max_length))])
 
 
 def clear(string):
