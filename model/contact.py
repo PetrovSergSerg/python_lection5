@@ -242,7 +242,7 @@ class Contact:
                 or self.id == other.id) \
                and utils.xstr(self.lastname) == utils.xstr(other.lastname) \
                and utils.xstr(self.firstname) == utils.xstr(other.firstname) \
-               and utils.xstr(self.address).strip() == utils.xstr(other.address).strip() \
+               and ' '.join(utils.xstr(self.address).strip().split()) == ' '.join(utils.xstr(other.address).strip().split()) \
                and self.emails == other.emails \
                and self.phones == other.phones
 
